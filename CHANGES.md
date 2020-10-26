@@ -1,4 +1,44 @@
-2018-07-17, Version 3.4.0
+2019-04-05, Version 3.6.1
+=========================
+
+ * Fix cannot create foreignkey (#371) (Hung)
+
+ * Add regression test (jlawrencecfm)
+
+ * Use canonical index name when dropping (jlawrencecfm)
+
+ * add @elv1s as CODEOWNERS (Diana Lau)
+
+
+2019-02-08, Version 3.6.0
+=========================
+
+ * add code comment (elv1s)
+
+ * bug fix for multiple fk (elv1s)
+
+ * Fix timestamp precision force isActual to false (Rafael D. Fito)
+
+
+2019-01-25, Version 3.5.1
+=========================
+
+ * Update CODEOWNERS to reflect the current status (Diana Lau)
+
+ * add support for create and delete foreign key (elv1s)
+
+
+2018-11-09, Version 3.5.0
+=========================
+
+ * Fixed line length to pass lint (ataft)
+
+ * Fix hard-coded "pkName" column in queries (ataft)
+
+ * Modify type 'double precision' to map to float (ataft)
+
+
+2018-07-16, Version 3.4.0
 =========================
 
  * Drop Node 4 in CI (Diana Lau)

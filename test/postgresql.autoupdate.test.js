@@ -361,4 +361,400 @@ describe('autoupdate', function() {
       });
     });
   });
+
+  describe('foreign key constraint', function() {
+    it('should create, update, and delete foreign keys', function(done) {
+      var product_schema = {
+        'name': 'Product',
+        'options': {
+          'idInjection': false,
+          'postgresql': {
+            'schema': 'myapp_test',
+            'table': 'product_test',
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'name': {
+            'type': 'String',
+            'required': false,
+            'length': 40,
+          },
+        },
+      };
+
+      var customer2_schema = {
+        'name': 'CustomerTest2',
+        'options': {
+          'idInjection': false,
+          'postgresql': {
+            'schema': 'myapp_test',
+            'table': 'customer_test2',
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'name': {
+            'type': 'String',
+            'required': false,
+            'length': 40,
+          },
+          'email': {
+            'type': 'String',
+            'required': true,
+            'length': 40,
+          },
+          'age': {
+            'type': 'Number',
+            'required': false,
+          },
+        },
+      };
+
+      var customer3_schema = {
+        'name': 'CustomerTest3',
+        'options': {
+          'idInjection': false,
+          'postgresql': {
+            'schema': 'myapp_test',
+            'table': 'customer_test3',
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'name': {
+            'type': 'String',
+            'required': false,
+            'length': 40,
+          },
+          'email': {
+            'type': 'String',
+            'required': true,
+            'length': 40,
+          },
+          'age': {
+            'type': 'Number',
+            'required': false,
+          },
+        },
+      };
+
+      var orderTest_schema_v1 = {
+        'name': 'OrderTest',
+        'options': {
+          'idInjection': false,
+          'postgresql': {
+            'schema': 'myapp_test',
+            'table': 'order_test',
+          },
+          'foreignKeys': {
+            'fk_ordertest_customerId': {
+              'name': 'fk_ordertest_customerId',
+              'entity': 'CustomerTest3',
+              'entityKey': 'id',
+              'foreignKey': 'customerId',
+            },
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'customerId': {
+            'type': 'String',
+            'length': 20,
+            'postgresql': {
+              'columnName': 'customerId',
+            },
+          },
+          'description': {
+            'type': 'String',
+            'required': false,
+            'length': 40,
+          },
+        },
+      };
+
+      var orderTest_schema_v2 = {
+        'name': 'OrderTest',
+        'options': {
+          'idInjection': false,
+          'postgresql': {
+            'schema': 'myapp_test',
+            'table': 'order_test',
+          },
+          'foreignKeys': {
+            'fk_ordertest_customerId': {
+              'name': 'fk_ordertest_customerId',
+              'entity': 'CustomerTest2',
+              'entityKey': 'id',
+              'foreignKey': 'customerId',
+            },
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'customerId': {
+            'type': 'String',
+            'length': 20,
+            'postgresql': {
+              'columnName': 'customerId',
+            },
+          },
+          'description': {
+            'type': 'String',
+            'required': false,
+            'length': 40,
+          },
+          'productId': {
+            'type': 'String',
+            'length': 20,
+            'postgresql': {
+              'columnName': 'productId',
+            },
+          },
+        },
+      };
+
+      var orderTest_schema_v3 = {
+        'name': 'OrderTest',
+        'options': {
+          'idInjection': false,
+          'postgresql': {
+            'schema': 'myapp_test',
+            'table': 'order_test',
+          },
+          'foreignKeys': {
+            'fk_ordertest_customerId': {
+              'name': 'fk_ordertest_customerId',
+              'entity': 'CustomerTest2',
+              'entityKey': 'id',
+              'foreignKey': 'customerId',
+            },
+            'fk_ordertest_productId': {
+              'name': 'fk_ordertest_productId',
+              'entity': 'Product',
+              'entityKey': 'id',
+              'foreignKey': 'productId',
+            },
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'customerId': {
+            'type': 'String',
+            'length': 20,
+            'postgresql': {
+              'columnName': 'customerId',
+            },
+          },
+          'description': {
+            'type': 'String',
+            'required': false,
+            'length': 40,
+          },
+          'productId': {
+            'type': 'String',
+            'length': 20,
+            'postgresql': {
+              'columnName': 'productId',
+            },
+          },
+        },
+      };
+
+      var orderTest_schema_v4 = {
+        'name': 'OrderTest',
+        'options': {
+          'idInjection': false,
+          'postgresql': {
+            'schema': 'myapp_test',
+            'table': 'order_test',
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'customerId': {
+            'type': 'String',
+            'length': 20,
+            'postgresql': {
+              'columnName': 'customerId',
+            },
+          },
+          'productId': {
+            'type': 'String',
+            'length': 20,
+            'postgresql': {
+              'columnName': 'productId',
+            },
+          },
+          'description': {
+            'type': 'String',
+            'required': false,
+            'length': 40,
+          },
+        },
+      };
+
+      ds.createModel(product_schema.name, product_schema.properties, product_schema.options);
+      ds.createModel(customer2_schema.name, customer2_schema.properties, customer2_schema.options);
+      ds.createModel(customer3_schema.name, customer3_schema.properties, customer3_schema.options);
+
+      // Table create order is important. Referenced tables must exist before creating a reference.
+      // do initial update/creation of referenced tables
+      ds.autoupdate(function(err) {
+        assert(!err, err);
+
+        // do initial update/creation of table with fk
+        ds.createModel(orderTest_schema_v1.name, orderTest_schema_v1.properties, orderTest_schema_v1.options);
+        ds.autoupdate(function(err) {
+          assert(!err, err);
+          ds.discoverModelProperties('order_test', function(err, props) {
+            // validate that we have the correct number of properties
+            assert.equal(props.length, 3);
+
+            // get the foreign keys for order_test
+            ds.connector.discoverForeignKeys('order_test', {}, function(err, foreignKeys) {
+              assert(!err, err);
+              // validate that the foreign key exists and points to the right column
+              assert(foreignKeys);
+              assert.equal(foreignKeys.length, 1);
+              assert.equal(foreignKeys[0].pkColumnName, 'id');
+              assert.equal(foreignKeys[0].pkTableName, 'customer_test3');
+              assert.equal(foreignKeys[0].fkColumnName, 'customerId');
+              assert.equal(foreignKeys[0].fkName, 'fk_ordertest_customerId');
+
+              // update and add another fk
+              ds.createModel(orderTest_schema_v2.name, orderTest_schema_v2.properties, orderTest_schema_v2.options);
+              ds.autoupdate(function(err) {
+                assert(!err, err);
+                ds.discoverModelProperties('order_test', function(err, props) {
+                  // validate that we have the correct number of properties
+                  assert.equal(props.length, 4);
+
+                  // get the foreign keys for order_test
+                  ds.connector.discoverForeignKeys('order_test', {}, function(err, foreignKeysUpdated) {
+                    assert(!err, err);
+                    // validate that the foreign keys exist and point to the new column
+                    assert(foreignKeysUpdated);
+                    assert.equal(foreignKeysUpdated.length, 1);
+                    assert.equal(foreignKeysUpdated[0].pkColumnName, 'id');
+                    assert.equal(foreignKeysUpdated[0].pkTableName, 'customer_test2');
+                    assert.equal(foreignKeysUpdated[0].fkColumnName, 'customerId');
+                    assert.equal(foreignKeysUpdated[0].fkName, 'fk_ordertest_customerId');
+
+                    // create multiple fks on object
+                    ds.createModel(orderTest_schema_v3.name, orderTest_schema_v3.properties,
+                      orderTest_schema_v3.options);
+                    ds.autoupdate(function(err) {
+                      // get the foreign keys for order_test
+                      ds.connector.discoverForeignKeys('order_test', {}, function(err, foreignKeysMulti) {
+                        assert(!err, err);
+                        assert(foreignKeysMulti);
+                        assert.equal(foreignKeysMulti.length, 2);
+
+                        // remove fk
+                        ds.createModel(orderTest_schema_v4.name, orderTest_schema_v4.properties,
+                          orderTest_schema_v4.options);
+                        ds.autoupdate(function(err) {
+                          assert(!err, err);
+                          ds.discoverModelProperties('order_test', function(err, props) {
+                            // validate that we have the correct number of properties
+                            assert.equal(props.length, 4);
+
+                            // get the foreign keys for order_test
+                            ds.connector.discoverForeignKeys('order_test', {}, function(err, foreignKeysEmpty) {
+                              if (err) return done(err);
+                              assert(foreignKeysEmpty);
+                              assert.equal(foreignKeysEmpty.length, 0);
+                              done();
+                            });
+                          });
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
+  describe('indexes on table in schema', function() {
+    var schema = {
+      options: {
+        postgresql: {
+          schema: 'aschema',
+        },
+      },
+      properties: {
+        something: {
+          type: 'string',
+          index: true,
+        },
+      },
+    };
+
+    var changedSchema = Object.assign({}, schema, {
+      properties: {
+        something: {
+          type: 'string',
+          index: false,
+        },
+      },
+    });
+
+    afterEach(function(done) {
+      ds.adapter.dropTable('ATable', done);
+    });
+
+    it('should update without errors', function(done) {
+      ds.define('ATable', schema.properties, schema.options);
+      ds.autoupdate(['ATable'], function(err) {
+        assert(!err, err);
+        done();
+      });
+    });
+
+    it('should be removed successfully', function(done) {
+      ds.define('ATable', schema.properties, schema.options);
+      ds.autoupdate(['ATable'], function(err) {
+        assert(!err, err);
+        ds.define('ATable', changedSchema.properties, changedSchema.options);
+        ds.autoupdate(['ATable'], function(err) {
+          assert(!err, err);
+          done();
+        });
+      });
+    });
+  });
 });
